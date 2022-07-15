@@ -1,10 +1,10 @@
 import Vapor
 import SwiftHtml
 
-public struct WebIndex: TemplateRepresentable {
-    public var context: WebIndexContent
+public struct WebIndexTemplate: TemplateRepresentable {
+    public var context: WebIndexContext
     
-    public init(_ context: WebIndexContent) {
+    public init(_ context: WebIndexContext) {
         self.context = context
     }
     @TagBuilder
@@ -23,8 +23,11 @@ public struct WebIndex: TemplateRepresentable {
             }
             Body{
                 Div{
-                    H1(context.title)
-                }.class(["container", "primary"])
+                    WebHeaderMenuTamplate(context.webHeaderMenu).render(req)
+                    WebBodyTamplate(context.webBody).render(req)
+                    WebFooterMenuTamplate(context.webFooterMenu).render(req)
+                }.class(["container-lg", "container-fluid", "bg-warning", "flex-column", "min-vh-100"//, "position-relative"
+                        ])
                 Script()
                     .src("https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js")
                     .integrity("sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2")

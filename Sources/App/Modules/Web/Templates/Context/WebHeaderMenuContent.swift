@@ -1,4 +1,4 @@
-public struct WebIndexContent {
+public struct WebHeaderMenuContext {
     public let title: String
     
     public init(title: String) {

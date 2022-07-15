@@ -9,6 +9,8 @@ import SwiftHtml
 public func configure(_ app: Application) throws {
     /// use the Public directory to serve public files
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
+    /// extend paths to always contain a trailing slash
+    app.middleware.use(ExtendPathMiddleware())
 
     app.databases.use(.postgres(
         hostname: Environment.get("DATABASE_HOST") ?? "localhost",
@@ -18,6 +20,10 @@ public func configure(_ app: Application) throws {
         database: Environment.get("DATABASE_NAME") ?? "vapor_test"
     ), as: .psql)
     
-    let router = WebRouter()
-    try router.boot(routes: app.routes)
+    let routers: [RouteCollection] = [
+        WebRouter(),
+        ]
+    for router in routers {
+        try router.boot(routes: app.routes)
+    }
 }
